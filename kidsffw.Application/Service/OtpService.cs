@@ -3,7 +3,7 @@
 using Common.Interfaces.Repository;
 using Domain.Entity;
 using Interfaces.Service;
-using kidsffw.Application.Specifications;
+using Specifications;
 
 public class OtpService : IOtpService
 {
