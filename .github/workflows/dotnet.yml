@@ -1,16 +1,12 @@
-name: .NET
-
+name: Kidsffw CI/CD
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -22,7 +18,7 @@ jobs:
     - name: Build
       run: dotnet build -c Release --no-restore
     - name: Upload Application
-      run: dotnet publish
+      run: dotnet publish -c Release
     - name: Upload WebApp1 Build Artifact
       uses: actions/upload-artifact@v2
       with:
