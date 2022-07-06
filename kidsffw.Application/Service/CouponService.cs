@@ -1,9 +1,10 @@
+namespace kidsffw.Application.Service;
+
 using kidsffw.Application.Interfaces.Service;
+using kidsffw.Application.Specifications;
 using kidsffw.Common.DTO;
 using kidsffw.Common.Interfaces.Repository;
 using kidsffw.Domain.Entity;
-
-namespace kidsffw.Application.Service;
 
 public class CouponService : ICouponService
 {
@@ -47,9 +48,15 @@ public class CouponService : ICouponService
         };
     }
 
-    public Task<decimal> GetCouponDiscount(string couponCode)
+    public async Task<decimal> GetCouponDiscount(string couponCode)
     {
-        throw new NotImplementedException();
+        var spec = CouponSpecifications.GetCouponCodeByCouponId(couponCode);
+        var result = await _unitOfWork.Repository<CouponEntity>().FirstOrDefaultAsync(spec);
+        if (result!=null)
+        {
+            return result.DiscountPercent;
+        }
+        return 0;
     }
 
     public Task<SalesPartnerContactDto> GetSalesPartnerContactByCouponCode(string couponCode)

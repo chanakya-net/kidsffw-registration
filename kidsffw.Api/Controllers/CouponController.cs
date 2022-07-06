@@ -31,5 +31,12 @@ namespace kidsffw.Api.Controllers
             var result = await _couponService.CreateCoupon(coupon);
             return Ok(result);
         }
+
+        [HttpGet("GetDiscountPercantage/{couponCode}")]
+        public async Task<decimal> GetCouponDiscount(string couponCode)
+        {
+            var result = await _couponService.GetCouponDiscount(couponCode);
+            return result;
+        }
     }
 }
