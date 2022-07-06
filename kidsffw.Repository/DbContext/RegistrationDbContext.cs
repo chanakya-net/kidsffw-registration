@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 public class RegistrationDbContext : DbContext
 {
-    public DbSet<SalesPartnerEntity> SalesPartners { get; set; }
-    public DbSet<CouponEntity> Coupons { get; set; }
+    public DbSet<SalesPartnerEntity>? SalesPartners { get; set; }
+    public DbSet<CouponEntity>? Coupons { get; set; }
 
     public RegistrationDbContext()
     {

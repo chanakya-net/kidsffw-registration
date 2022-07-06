@@ -14,8 +14,12 @@ public class SalesPartnerService : ISalesPartnerService
         _UnitOfWork = unitOfWork;
     }
 
-    public async Task<CreateSalesPartnerResponseDto> CreateSalesPartner(CreateSalesPartnerRequestDto? request)
+    public async Task<CreateSalesPartnerResponseDto?> CreateSalesPartner(CreateSalesPartnerRequestDto? request)
     {
+        if (request == null)
+        {
+            return null;
+        }
         var user = await _UnitOfWork.Repository<SalesPartnerEntity>().AddAsync(
             new SalesPartnerEntity()
             {
@@ -34,9 +38,13 @@ public class SalesPartnerService : ISalesPartnerService
         };
     }
 
-    public async Task<SalesPartnerContactDto> GetSalesPartnerContact(int salesPartnerId)
+    public async Task<SalesPartnerContactDto?> GetSalesPartnerContact(int salesPartnerId)
     {
         var result=  await _UnitOfWork.Repository<SalesPartnerEntity>().GetByIdAsync(salesPartnerId);
+        if (result == null)
+        {
+            return null;
+        }
         return new SalesPartnerContactDto()
         {
             ContactNumber = result.ContactNumber,

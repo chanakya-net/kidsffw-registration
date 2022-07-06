@@ -25,7 +25,10 @@ public class UnitOfWork : IUnitOfWork
 
         var repositoryType = typeof(BaseRepositoryAsync<>);
         var repository = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _dbContext);
-
+        if (repository == null)
+        {
+            throw new InvalidOperationException("Repository not found");
+        }
         _repositories.Add(entityType, repository);
         return (IBaseRepositoryAsync<T>)repository;
     }
