@@ -4,7 +4,7 @@ namespace kidsffw.Domain.Entity;
 
 public class CouponEntity: BaseEntity
 {
-    public string CouponCode { get; set; }
+    public string CouponCode { get; set; } = string.Empty;
     public decimal DiscountPercent { get; set; }
     public DateTime ValidFrom { get; set; }
     public DateTime? ValidTill { get; set; }
