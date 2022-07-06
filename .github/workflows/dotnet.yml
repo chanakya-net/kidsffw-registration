@@ -23,6 +23,6 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: kidsffw.api
-        path: /home/runner/work/kidsffw-registration/kidsffw-registration/kidsffw.Api/bin/Debug/net6.0/publish/
+        path: /home/runner/work/kidsffw-registration/kidsffw-registration/kidsffw.Api/bin/Release/net6.0/publish/
 
       
