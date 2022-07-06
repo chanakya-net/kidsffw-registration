@@ -9,6 +9,8 @@ public static class DependencyResolver
 {
     public static IServiceCollection AddApplication(this IServiceCollection collection)
     {
-        return collection.AddRepository().AddScoped<ISalesPartnerService, SalesPartnerService>();
+        return collection.AddRepository()
+            .AddScoped<ISalesPartnerService, SalesPartnerService>()
+            .AddScoped<ICouponService,CouponService>();
     }
 }

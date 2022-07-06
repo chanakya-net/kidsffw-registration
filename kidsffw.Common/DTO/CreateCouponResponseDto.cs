@@ -4,6 +4,7 @@ namespace kidsffw.Common.DTO;
 
 public class CreateCouponResponseDto
 {
+    public int Id { get; set; }
     public string CouponCode { get; set; } = string.Empty;
     public decimal DiscountPercent { get; set; }
     public DateTime ValidFrom { get; set; }

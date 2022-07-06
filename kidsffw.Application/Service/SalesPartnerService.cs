@@ -7,11 +7,11 @@ namespace kidsffw.Application.Service;
 
 public class SalesPartnerService : ISalesPartnerService
 {
-    public readonly IUnitOfWork _UnitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public SalesPartnerService(IUnitOfWork unitOfWork)
     {
-        _UnitOfWork = unitOfWork;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<CreateSalesPartnerResponseDto?> CreateSalesPartner(CreateSalesPartnerRequestDto? request)
@@ -20,7 +20,7 @@ public class SalesPartnerService : ISalesPartnerService
         {
             return null;
         }
-        var user = await _UnitOfWork.Repository<SalesPartnerEntity>().AddAsync(
+        var user = await _unitOfWork.Repository<SalesPartnerEntity>().AddAsync(
             new SalesPartnerEntity()
             {
                 ContactNumber = request.ContactNumber,
@@ -28,7 +28,7 @@ public class SalesPartnerService : ISalesPartnerService
                 Name = request.Name
             }
         );
-        await _UnitOfWork.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         return new CreateSalesPartnerResponseDto()
         {
             Id = user.Id,
@@ -40,7 +40,7 @@ public class SalesPartnerService : ISalesPartnerService
 
     public async Task<SalesPartnerContactDto?> GetSalesPartnerContact(int salesPartnerId)
     {
-        var result=  await _UnitOfWork.Repository<SalesPartnerEntity>().GetByIdAsync(salesPartnerId);
+        var result=  await _unitOfWork.Repository<SalesPartnerEntity>().GetByIdAsync(salesPartnerId);
         if (result == null)
         {
             return null;
