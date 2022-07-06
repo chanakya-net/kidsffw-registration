@@ -1,10 +1,10 @@
 namespace kidsffw.Application.Service;
 
 using kidsffw.Application.Interfaces.Service;
-using kidsffw.Application.Specifications;
-using kidsffw.Common.DTO;
+using Specifications;
+using Common.DTO;
 using kidsffw.Common.Interfaces.Repository;
-using kidsffw.Domain.Entity;
+using Domain.Entity;
 
 public class CouponService : ICouponService
 {
@@ -50,7 +50,7 @@ public class CouponService : ICouponService
 
     public async Task<decimal> GetCouponDiscount(string couponCode)
     {
-        var spec = CouponSpecifications.GetCouponCodeByCouponId(couponCode);
+        var spec = Specifications.GetCouponCodeByCouponId(couponCode);
         var result = await _unitOfWork.Repository<CouponEntity>().FirstOrDefaultAsync(spec);
         if (result!=null)
         {

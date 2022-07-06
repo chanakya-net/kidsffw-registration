@@ -11,6 +11,7 @@ public static class DependencyResolver
     {
         return collection.AddRepository()
             .AddScoped<ISalesPartnerService, SalesPartnerService>()
-            .AddScoped<ICouponService,CouponService>();
+            .AddScoped<ICouponService,CouponService>()
+            .AddScoped<IOtpService,OtpService>();
     }
 }
