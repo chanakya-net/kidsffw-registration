@@ -22,8 +22,5 @@ jobs:
     - name: Build
       run: dotnet build -c Release --no-restore
     - name: Upload Application
-      uses: actions/upload-artifact@v3
-      with:
-        name: dotnet-results
-        path: TestResults
+      run: dotnet publish
       
