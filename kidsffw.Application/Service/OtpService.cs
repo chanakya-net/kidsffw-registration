@@ -7,7 +7,7 @@ using kidsffw.Application.Specifications;
 
 public class OtpService : IOtpService
 {
-    private IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public OtpService(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
