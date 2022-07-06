@@ -20,6 +20,10 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet build -c Release --no-restore
+    - name: Upload Application
+      uses: actions/upload-artifact@v3
+      with:
+        name: dotnet-results
+        path: TestResults
+      
