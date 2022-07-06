@@ -23,4 +23,10 @@ jobs:
       run: dotnet build -c Release --no-restore
     - name: Upload Application
       run: dotnet publish
+    - name: Upload WebApp1 Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: kidsffw.api
+        path: /home/runner/work/kidsffw-registration/kidsffw-registration/kidsffw.Api/bin/Debug/net6.0/publish/
+
       
