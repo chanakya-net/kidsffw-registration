@@ -17,9 +17,9 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build -c Release --no-restore
-    - name: Upload Application
+    - name: Publish Application
       run: dotnet publish -c Release
-    - name: Upload WebApp1 Build Artifact
+    - name: Upload API Artifact
       uses: actions/upload-artifact@v2
       with:
         name: kidsffw.api
