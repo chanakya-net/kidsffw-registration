@@ -1,7 +1,6 @@
-using kidsffw.Domain.Base;
-
 namespace kidsffw.Domain.Entity;
 
+using Base;
 public class CouponEntity: BaseEntity
 {
     public string CouponCode { get; set; } = string.Empty;
