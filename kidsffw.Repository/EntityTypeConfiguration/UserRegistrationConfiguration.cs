@@ -17,7 +17,7 @@ public class UserRegistrationConfiguration : IEntityTypeConfiguration<UserRegist
         builder.Property(x => x.Gender).HasMaxLength(10).IsRequired();
         builder.Property(x => x.CouponCode).HasMaxLength(6).IsRequired(false);
         builder.Property(x => x.ParentName).HasMaxLength(100).IsRequired();
-        builder.Property(x => x.OtpVerified).IsRequired(false);
+        // builder.Property(x => x.OtpVerified).IsRequired(false);
 
     }
 }
