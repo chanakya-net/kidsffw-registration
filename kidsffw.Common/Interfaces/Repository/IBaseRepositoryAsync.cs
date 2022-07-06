@@ -4,8 +4,8 @@ namespace kidsffw.Common.Interfaces.Repository;
 
 public interface IBaseRepositoryAsync<T> where T: BaseEntity
 {
-    public Task<T> GetByIdAsync(int id);
-    Task<IList<T>> ListAllAsync();
+    public Task<T?> GetByIdAsync(int id);
+    Task<IList<T?>> ListAllAsync();
     Task<T> AddAsync(T entity);
     void Update(T entity);
     void Delete(T entity);
