@@ -18,6 +18,11 @@ public static class Specifications
             x.MobileNumber == mobileNumber &&
             x.ValidTill >= validationTime);
     }
+    
+    public static  BaseSpecification<UserRegistrationEntity> GetUserByMobileNumber(string mobileNumber)
+    {
+        return new BaseSpecification<UserRegistrationEntity>(x => x.MobileNumber == mobileNumber);
+    }
 
 }
 

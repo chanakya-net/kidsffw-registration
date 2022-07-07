@@ -1,9 +1,8 @@
-﻿namespace kidsffw.Domain.Entity;
+namespace kidsffw.Common.DTO;
 
-using Base;
-
-public class UserRegistrationEntity : BaseEntity
+public class CreateUserRegistrationResponseDto
 {
+    public int Id { get; set; }
     public string MobileNumber { get; set; } = string.Empty;
     public string ParentName { get; set; } = string.Empty;
     public string KidName { get; set; } = string.Empty;
@@ -11,8 +10,6 @@ public class UserRegistrationEntity : BaseEntity
     public string Age { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;
-    public bool OtpVerified { get; set; } = false;
-    public string CouponCode { get; set; } = string.Empty;
     public string TransactionId { get; set; } = string.Empty;
-    public DateTime? TransactionDate { get; set; }
+    public DateTime TransactionDate { get; set; } = DateTime.Now;
 }

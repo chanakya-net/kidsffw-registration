@@ -14,6 +14,7 @@ public class OtpController : ControllerBase
     public OtpController(IOtpService otpService) => _otpService = otpService;
 
     [HttpPost("Get")]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetOtp(string mobileNumber)
     {
         var result = await _otpService.CreateOtp(mobileNumber);
@@ -21,6 +22,7 @@ public class OtpController : ControllerBase
     }
 
     [HttpPost("Verify")]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     public async Task<IActionResult> VerifyOtp(string otp, string mobileNumber)
     {
         var result = await _otpService.VerifyOtp(mobileNumber, otp);
