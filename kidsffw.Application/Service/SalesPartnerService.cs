@@ -20,21 +20,18 @@ public class SalesPartnerService : ISalesPartnerService
         {
             return null;
         }
+
+
         var user = await _unitOfWork.Repository<SalesPartnerEntity>().AddAsync(
             new SalesPartnerEntity()
             {
-                ContactNumber = request.ContactNumber,
-                Email = request.Email,
-                Name = request.Name
+                ContactNumber = request.ContactNumber, Email = request.Email, Name = request.Name
             }
         );
         await _unitOfWork.SaveChangesAsync();
         return new CreateSalesPartnerResponseDto()
         {
-            Id = user.Id,
-            Name = user.Name,
-            Email = user.Email,
-            ContactNumber = user.ContactNumber
+            Id = user.Id, Name = user.Name, Email = user.Email, ContactNumber = user.ContactNumber
         };
     }
 
