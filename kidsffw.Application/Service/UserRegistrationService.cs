@@ -8,18 +8,31 @@ using Specifications;
 
 public class UserRegistrationService : IUserRegistrationService
 {
+    private const decimal RegistrationFee = 2500;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IOtpService _otpService;
+    private readonly ICouponService _couponService;
+    private readonly IRazorPayService _razorPayService;
 
-    public UserRegistrationService(IUnitOfWork unitOfWork, IOtpService otpService)
+    public UserRegistrationService(IUnitOfWork unitOfWork, IOtpService otpService, ICouponService couponService, IRazorPayService razorPayService)
     {
         _unitOfWork = unitOfWork;
         _otpService = otpService;
+        _couponService = couponService;
+        _razorPayService = razorPayService;
     }
 
-    public async Task<GetUserRequestDto> AddUserRegistration(CreateUserRegistrationRequestDto request)
+    public async Task<CreateUserRegistrationResponseDto> AddUserRegistration(CreateUserRegistrationRequestDto request)
     {
         var result = await _otpService.VerifyOtp(request.MobileNumber, request.OtpCode);
+        
+        var discount = await _couponService.GetCouponDiscount(request.CouponCode);
+
+        var chargeableAmount = RegistrationFee - (RegistrationFee * (discount / 100));
+
+        var razorPayOrder = _razorPayService.CreateOrder(chargeableAmount);
+        
+         
         if (result)
         {
             var registeredUser = await _unitOfWork.Repository<UserRegistrationEntity>()
@@ -38,7 +51,8 @@ public class UserRegistrationService : IUserRegistrationService
                     }
                 );
             await _unitOfWork.SaveChangesAsync();
-            return new GetUserRequestDto()
+            // if saved successfully then add order id and key to the returned type and return it to the user
+            return new CreateUserRegistrationResponseDto()
             {
                 Id = registeredUser.Id,
                 Age = registeredUser.Age,
@@ -48,9 +62,11 @@ public class UserRegistrationService : IUserRegistrationService
                 KidName = registeredUser.KidName,
                 MobileNumber = registeredUser.MobileNumber,
                 ParentName = registeredUser.ParentName,
+                Amount = razorPayOrder?.DueAmount,
+                OrderId = razorPayOrder?.OrderId,
+                RazorPayKey = razorPayOrder?.Key
             };
         }
-
         throw new InvalidOperationException("Invalid otp");
     }
 

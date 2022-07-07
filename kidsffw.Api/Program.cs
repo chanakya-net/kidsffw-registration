@@ -1,4 +1,5 @@
 using kidsffw.Application;
+using kidsffw.Common.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+var razorPayConfiguration = builder.Configuration.GetSection("RazorPayConfiguration").Get<RazorPayConfiguration>();
+builder.Services.AddSingleton(razorPayConfiguration);
 builder.Services.AddApplication();
 
 var app = builder.Build();

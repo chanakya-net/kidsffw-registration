@@ -13,6 +13,8 @@ public static class DependencyResolver
             .AddScoped<ISalesPartnerService, SalesPartnerService>()
             .AddScoped<ICouponService,CouponService>()
             .AddScoped<IOtpService,OtpService>()
-            .AddScoped<IUserRegistrationService,UserRegistrationService>();
+            .AddScoped<IUserRegistrationService,UserRegistrationService>()
+            .AddScoped<IRazorPayService,RazorPayService>()
+            .AddScoped<IMessageService,WhatsAppMessageService>();
     }
 }

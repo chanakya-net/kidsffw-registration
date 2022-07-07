@@ -8,8 +8,13 @@ using Specifications;
 public class OtpService : IOtpService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMessageService _messageService;
 
-    public OtpService(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+    public OtpService(IUnitOfWork unitOfWork, IMessageService messageService)
+    {
+        _unitOfWork = unitOfWork;
+        _messageService = messageService;
+    }
 
     public async Task<bool> VerifyOtp(string mobileNumber, string otp)
     {
@@ -33,6 +38,12 @@ public class OtpService : IOtpService
         };
         var result = await _unitOfWork.Repository<OtpEntity>().AddAsync(otpData);
         await _unitOfWork.SaveChangesAsync();
+        // http://wa.asapsms.in:8080/SendMessage?wa=9620880000&msg=Hello
+        var otpResult = await _messageService.SendMessage(mobileNumber, otpCode);
+        if (!otpResult)
+        {
+            throw new Exception("Otp not sent");
+        }
         return otpData.Otp;
     }
 }

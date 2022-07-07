@@ -10,6 +10,7 @@ public class CreateUserRegistrationResponseDto
     public string Age { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;
-    public string TransactionId { get; set; } = string.Empty;
-    public DateTime TransactionDate { get; set; } = DateTime.Now;
+    public decimal? Amount { get; set; } = 0M;
+    public string OrderId { get; set; } = string.Empty;
+    public string RazorPayKey { get; set; } = string.Empty;
 }
