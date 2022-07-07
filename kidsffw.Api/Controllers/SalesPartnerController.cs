@@ -29,7 +29,15 @@ public class SalesPartnerController : ControllerBase
     [ProducesResponseType(typeof(SalesPartnerContactDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetSalesPartner(int Id)
     {
-        var result = await _salesPartnerService.GetSalesPartnerContact(Id);
+        var result = await _salesPartnerService.GetSalesPartnerContactByPartnerId(Id);
+        return Ok(result);
+    }
+    
+    [HttpGet("GetSalesPartnerContactByCoupon/{code}")]
+    [ProducesResponseType(typeof(SalesPartnerContactDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetSalesPartner(string code)
+    {
+        var result = await _salesPartnerService.GetSalesPartnerContactByCouponId(code);
         return Ok(result);
     }
 }

@@ -1,17 +1,21 @@
-using kidsffw.Application.Interfaces.Service;
-using kidsffw.Common.DTO;
-using kidsffw.Common.Interfaces.Repository;
-using kidsffw.Domain.Entity;
-
 namespace kidsffw.Application.Service;
+
+using kidsffw.Application.Interfaces.Service;
+using Common.DTO;
+using kidsffw.Common.Interfaces.Repository;
+using Domain.Entity;
+using Specifications;
+
 
 public class SalesPartnerService : ISalesPartnerService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMessageService _messageService;
 
-    public SalesPartnerService(IUnitOfWork unitOfWork)
+    public SalesPartnerService(IUnitOfWork unitOfWork, IMessageService messageService)
     {
         _unitOfWork = unitOfWork;
+        _messageService = messageService;
     }
 
     public async Task<CreateSalesPartnerResponseDto?> CreateSalesPartner(CreateSalesPartnerRequestDto? request)
@@ -35,7 +39,7 @@ public class SalesPartnerService : ISalesPartnerService
         };
     }
 
-    public async Task<SalesPartnerContactDto?> GetSalesPartnerContact(int salesPartnerId)
+    public async Task<SalesPartnerContactDto?> GetSalesPartnerContactByPartnerId(int salesPartnerId)
     {
         var result=  await _unitOfWork.Repository<SalesPartnerEntity>().GetByIdAsync(salesPartnerId);
         if (result == null)
@@ -48,5 +52,23 @@ public class SalesPartnerService : ISalesPartnerService
             Email = result.Email,
             Name = result.Name
         };
+    }
+
+    public async Task<SalesPartnerContactDto?> GetSalesPartnerContactByCouponId(string couponId)
+    {
+        var spec = Specifications.GetPatnerIdByCouponCode(couponId);
+        var result = await _unitOfWork.Repository<CouponEntity>().FirstOrDefaultAsync(spec);
+        if (result == null)
+        {
+            return null;
+        }
+
+        var salesPartnerContact = await GetSalesPartnerContactByPartnerId(result.SalesPartnerId);
+        return salesPartnerContact;
+    }
+
+    public async Task<bool> SendRegistrationMessage(string mobileNumber, string message)
+    {
+        return await _messageService.SendMessage(mobileNumber, message);
     }
 }

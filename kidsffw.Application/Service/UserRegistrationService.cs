@@ -13,13 +13,15 @@ public class UserRegistrationService : IUserRegistrationService
     private readonly IOtpService _otpService;
     private readonly ICouponService _couponService;
     private readonly IRazorPayService _razorPayService;
+    private readonly ISalesPartnerService _salesPartnerService;
 
-    public UserRegistrationService(IUnitOfWork unitOfWork, IOtpService otpService, ICouponService couponService, IRazorPayService razorPayService)
+    public UserRegistrationService(IUnitOfWork unitOfWork, IOtpService otpService, ICouponService couponService, IRazorPayService razorPayService, ISalesPartnerService salesPartnerService)
     {
         _unitOfWork = unitOfWork;
         _otpService = otpService;
         _couponService = couponService;
         _razorPayService = razorPayService;
+        _salesPartnerService = salesPartnerService;
     }
 
     public async Task<CreateUserRegistrationResponseDto> AddUserRegistration(CreateUserRegistrationRequestDto request)
@@ -52,6 +54,15 @@ public class UserRegistrationService : IUserRegistrationService
                 );
             await _unitOfWork.SaveChangesAsync();
             // if saved successfully then add order id and key to the returned type and return it to the user
+            var contact = await _salesPartnerService.GetSalesPartnerContactByCouponId(request.CouponCode);
+            
+            if(contact?.ContactNumber is { Length: > 0 })
+            {
+                var message =
+                    $"Hi {contact.Name}, \n  {request.ParentName} with has registered successfully using your reference code {request.CouponCode}.";
+                await _salesPartnerService.SendRegistrationMessage(contact.ContactNumber, message);
+            }
+            
             return new CreateUserRegistrationResponseDto()
             {
                 Id = registeredUser.Id,

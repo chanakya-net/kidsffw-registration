@@ -59,11 +59,6 @@ public class CouponService : ICouponService
         return 0;
     }
 
-    public Task<SalesPartnerContactDto> GetSalesPartnerContactByCouponCode(string couponCode)
-    {
-        throw new NotImplementedException();
-    }
-
     public void DisableCoupon(string couponCode)
     {
         throw new NotImplementedException();

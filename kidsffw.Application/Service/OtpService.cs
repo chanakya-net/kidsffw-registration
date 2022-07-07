@@ -38,8 +38,8 @@ public class OtpService : IOtpService
         };
         var result = await _unitOfWork.Repository<OtpEntity>().AddAsync(otpData);
         await _unitOfWork.SaveChangesAsync();
-        // http://wa.asapsms.in:8080/SendMessage?wa=9620880000&msg=Hello
-        var otpResult = await _messageService.SendMessage(mobileNumber, otpCode);
+        var message = $"Hello, your OTP code for registration is {otpCode}";
+        var otpResult = await _messageService.SendMessage(mobileNumber, message);
         if (!otpResult)
         {
             throw new Exception("Otp not sent");

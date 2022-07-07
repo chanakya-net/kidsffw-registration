@@ -18,7 +18,6 @@ public class WhatsAppMessageService : IMessageService
         request.AddHeader("Content-Type", "application/json");
         request.AddHeader("Accept", "application/json");
         request.AddQueryParameter("wa", mobileNumber);
-        message = "Your OTP for registration for KFFW event is:-\n\n" + message;
         request.AddQueryParameter("msg", message);
         var response = await whatsAppClient.ExecuteAsync(request);
         return response.StatusCode == System.Net.HttpStatusCode.OK;

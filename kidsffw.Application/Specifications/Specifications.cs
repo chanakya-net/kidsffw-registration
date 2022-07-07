@@ -23,6 +23,11 @@ public static class Specifications
     {
         return new BaseSpecification<UserRegistrationEntity>(x => x.MobileNumber == mobileNumber);
     }
+    
+    public static  BaseSpecification<CouponEntity> GetPatnerIdByCouponCode(string couponCode)
+    {
+        return new BaseSpecification<CouponEntity>(x => x.CouponCode == couponCode);
+    }
 
 }
 
