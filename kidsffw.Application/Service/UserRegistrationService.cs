@@ -32,7 +32,9 @@ public class UserRegistrationService : IUserRegistrationService
 
         var chargeableAmount = RegistrationFee - (RegistrationFee * (discount / 100));
 
-        var razorPayOrder = _razorPayService.CreateOrder(chargeableAmount);
+        var razorPayOrder = _razorPayService.CreateOrder(chargeableAmount * 100);
+        
+        // TODO: do we need to save order to DB ?
         
          
         if (result)
@@ -49,19 +51,27 @@ public class UserRegistrationService : IUserRegistrationService
                         KidName = request.KidName,
                         MobileNumber = request.MobileNumber,
                         OtpVerified = true,
-                        ParentName = request.ParentName
+                        ParentName = request.ParentName,
+                        OrderId = razorPayOrder.OrderId,
+                        OrderCreationDate = DateTime.UtcNow
                     }
                 );
             await _unitOfWork.SaveChangesAsync();
-            // if saved successfully then add order id and key to the returned type and return it to the user
-            var contact = await _salesPartnerService.GetSalesPartnerContactByCouponId(request.CouponCode);
             
+            // TODO: sending of the message should be done once payment is verified in webhook callback
+            // We have ket it here just for the verification purpose
+            
+            // if saved successfully then add order id and key to the returned type and return it to the user
+
+            #region Need to move this to webhook callback
+            var contact = await _salesPartnerService.GetSalesPartnerContactByCouponId(request.CouponCode);
             if(contact?.ContactNumber is { Length: > 0 })
             {
                 var message =
                     $"Hi {contact.Name}, \n  {request.ParentName} with has registered successfully using your reference code {request.CouponCode}.";
                 await _salesPartnerService.SendRegistrationMessage(contact.ContactNumber, message);
             }
+            #endregion
             
             return new CreateUserRegistrationResponseDto()
             {
@@ -80,22 +90,7 @@ public class UserRegistrationService : IUserRegistrationService
         }
         throw new InvalidOperationException("Invalid otp");
     }
-
-    public async Task<string> UpdateUserRegistration(UpdateUserTransactionDtoRequest request)
-    {
-        var user = await _unitOfWork.Repository<UserRegistrationEntity>().GetByIdAsync(request.registrationId);
-        if (user == null)
-        {
-            throw new InvalidOperationException("User not found");
-        }
-
-        user.TransactionId = request.TransactionId;
-        user.TransactionDate = DateTime.UtcNow;
-        _unitOfWork.Repository<UserRegistrationEntity>().Update(user);
-        await _unitOfWork.SaveChangesAsync();
-        return user.TransactionId;
-    }
-
+    
     public async Task<IEnumerable<GetUserRequestDto>> GetUsersByMobileNumber(string mobileNumber)
     {
         var spec = Specifications.GetUserByMobileNumber(mobileNumber);

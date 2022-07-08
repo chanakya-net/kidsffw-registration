@@ -28,4 +28,8 @@ public class RazorPayService : IRazorPayService
         };
         return orderDetails;
     }
+
+    public async Task<bool> PaymentAuthorized(string paymentDetails) => throw new NotImplementedException();
+
+    public async Task<bool> PaymentFailed(string paymentDetails) => throw new NotImplementedException();
 }

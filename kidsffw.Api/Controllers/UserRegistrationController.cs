@@ -25,15 +25,7 @@ namespace kidsffw.Api.Controllers
             var result = await _userRegistrationService.AddUserRegistration(userRegistration);
             return Ok(result);
         }
-        
-        [HttpPatch("UpdateTransactionDetails")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]        
-        public async Task<IActionResult> UpdateTransactionDetails([FromBody] UpdateUserTransactionDtoRequest transactionDetails)
-        {
-            var result = await _userRegistrationService.UpdateUserRegistration(transactionDetails);
-            return Ok(result);
-        }
-        
+
         [HttpGet("ListUsersByMobileNumber/{mobileNumber}")]
         [ProducesResponseType(typeof(IEnumerable<GetUserRequestDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> ListUsersByMobileNumber(string mobileNumber)

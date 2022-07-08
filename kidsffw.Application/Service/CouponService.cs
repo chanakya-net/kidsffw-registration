@@ -40,7 +40,7 @@ public class CouponService : ICouponService
         return new CreateCouponResponseDto()
         {
             Id = result.Id,
-            SalesPartner = salesPartner,
+            SalesPartnerId = salesPartner.Id,
             CouponCode = result.CouponCode,
             IsActive = result.IsActive,
             DiscountPercent = result.DiscountPercent,

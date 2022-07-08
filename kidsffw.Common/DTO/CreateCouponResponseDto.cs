@@ -10,5 +10,5 @@ public class CreateCouponResponseDto
     public DateTime ValidFrom { get; set; }
     public DateTime? ValidTill { get; set; }
     public bool IsActive { get; set; }
-    public SalesPartnerEntity SalesPartner { get; set; }
+    public int SalesPartnerId { get; set; }
 }
