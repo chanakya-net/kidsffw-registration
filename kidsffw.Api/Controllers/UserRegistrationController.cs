@@ -19,7 +19,7 @@ namespace kidsffw.Api.Controllers
         public UserRegistrationController(IUserRegistrationService userRegistrationService) => _userRegistrationService = userRegistrationService;
 
         [HttpPost("RegisterUser")]
-        [ProducesResponseType(typeof(GetUserRequestDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CreateUserRegistrationResponseDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> RegisterUser([FromBody] CreateUserRegistrationRequestDto userRegistration)
         {
             var result = await _userRegistrationService.AddUserRegistration(userRegistration);
