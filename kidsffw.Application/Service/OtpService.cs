@@ -30,8 +30,8 @@ public class OtpService : IOtpService
     }
     public async Task<string> CreateOtp(string mobileNumber)
     {
-        string otpCode = Path.GetRandomFileName().ToUpper();
-        otpCode = otpCode[..6];
+        Random generator = new Random();
+        string otpCode = generator.Next(0, 1000000).ToString("D6");
         var otpData = new OtpEntity()
         {
             Otp = otpCode, MobileNumber = mobileNumber, ValidTill = DateTime.UtcNow.AddMinutes(3)
