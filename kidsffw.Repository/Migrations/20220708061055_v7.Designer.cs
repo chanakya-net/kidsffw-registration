@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using kidsffw.Repository.DbContext;
 
@@ -11,9 +12,10 @@ using kidsffw.Repository.DbContext;
 namespace kidsffw.Repository.Migrations
 {
     [DbContext(typeof(RegistrationDbContext))]
-    partial class RegistrationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220708061055_v7")]
+    partial class v7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,7 +82,7 @@ namespace kidsffw.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("otps", (string)null);
+                    b.ToTable("otpEntities");
                 });
 
             modelBuilder.Entity("kidsffw.Domain.Entity.SalesPartnerEntity", b =>

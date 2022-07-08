@@ -8,6 +8,7 @@ public class OtpConfiguration : IEntityTypeConfiguration<OtpEntity>
 {
     public void Configure(EntityTypeBuilder<OtpEntity> builder)
     {
+        builder.ToTable("otps");
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Otp).HasMaxLength(6).IsRequired();
         builder.Property(x => x.ValidTill).IsRequired();
