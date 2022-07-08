@@ -13,6 +13,6 @@ public class UserRegistrationEntity : BaseEntity
     public string City { get; set; } = string.Empty;
     public bool OtpVerified { get; set; } = false;
     public string CouponCode { get; set; } = string.Empty;
-    public string TransactionId { get; set; } = string.Empty;
-    public DateTime? TransactionDate { get; set; }
+    public string OrderId { get; set; } = string.Empty;
+    public DateTime? OrderCreationDate { get; set; }
 }
