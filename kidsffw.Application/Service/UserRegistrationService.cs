@@ -56,6 +56,7 @@ public class UserRegistrationService : IUserRegistrationService
                         OrderCreationDate = DateTime.UtcNow
                     }
                 );
+            // Save user and order to DB
             await _unitOfWork.SaveChangesAsync();
             
             // TODO: sending of the message should be done once payment is verified in webhook callback
@@ -68,7 +69,7 @@ public class UserRegistrationService : IUserRegistrationService
             if(contact?.ContactNumber is { Length: > 0 })
             {
                 var message =
-                    $"Hi {contact.Name}, \n  {request.ParentName} with has registered successfully using your reference code {request.CouponCode}.";
+                    $"Hi {contact.Name}, \n  {request.ParentName} has registered successfully using your reference code {request.CouponCode}.";
                 await _salesPartnerService.SendRegistrationMessage(contact.ContactNumber, message);
             }
             #endregion

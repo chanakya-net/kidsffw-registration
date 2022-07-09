@@ -7,9 +7,8 @@ public class RegistrationDbContext : DbContext
 {
     public DbSet<SalesPartnerEntity>? SalesPartners { get; set; }
     public DbSet<CouponEntity>? Coupons { get; set; }
-
-    public DbSet<OtpEntity>? otpEntities { get; set; }
-    public DbSet<UserRegistrationEntity>? UserRegistrationEntities { get; set; }
+    public DbSet<OtpEntity>? Otps { get; set; }
+    public DbSet<UserRegistrationEntity>? UserRegistrations{ get; set; }
 
     public RegistrationDbContext()
     {
