@@ -90,17 +90,17 @@ public class RazorPayController : ControllerBase
         }
         catch(Exception ex)
         {
-            var eventIdFromHeadder = Request.Headers["x-razorpay-event-id "].ToString();
-            var eventIdFromFail = await _razorPayErrorService.FindEventId(eventIdFromHeadder);
-            var eventIdFromSuccess = await _razorPayPaymentService.FindEventId(eventIdFromHeadder);
-            if (eventIdFromFail == eventIdFromHeadder || eventIdFromSuccess == eventIdFromHeadder)
-            {
-                return Ok(200);
-            }
+            //var eventIdFromHeadder = Request.Headers["x-razorpay-event-id "].ToString();
+            //var eventIdFromFail = await _razorPayErrorService.FindEventId(eventIdFromHeadder);
+            //var eventIdFromSuccess = await _razorPayPaymentService.FindEventId(eventIdFromHeadder);
+            //if (eventIdFromFail == eventIdFromHeadder || eventIdFromSuccess == eventIdFromHeadder)
+            //{
+            //    return Ok(200);
+            //}
             await _razorPayErrorService.SaveErrorInformation(new RazorPayErrorDto()
             {
                 ErrorMessage = ex.Message,
-                EventId =  Request.Headers["x-razorpay-event-id "].ToString(),
+                EventId =  "Unable to fetch",
                 OrderId = "Invalid Order Id",
                 MobileNumber = "paymentId",
             });
