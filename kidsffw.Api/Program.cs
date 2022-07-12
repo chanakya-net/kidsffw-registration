@@ -18,11 +18,11 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseCors("crossdomain");
+    
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("crossdomain");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
