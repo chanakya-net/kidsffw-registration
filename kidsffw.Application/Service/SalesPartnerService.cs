@@ -56,7 +56,7 @@ public class SalesPartnerService : ISalesPartnerService
 
     public async Task<SalesPartnerContactDto?> GetSalesPartnerContactByCouponId(string couponId)
     {
-        var spec = Specifications.GetPatnerIdByCouponCode(couponId);
+        var spec = Specifications.GetPartnerIdByCouponCode(couponId);
         var result = await _unitOfWork.Repository<CouponEntity>().FirstOrDefaultAsync(spec);
         if (result == null)
         {

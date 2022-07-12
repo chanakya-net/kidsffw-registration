@@ -13,5 +13,6 @@ public class RazorPayErrorConfiguration : IEntityTypeConfiguration<RazorPayError
         builder.Property(x => x.EventId).HasMaxLength(100).IsRequired();
         builder.Property(x => x.OrderId).HasMaxLength(100).IsRequired();
         builder.Property(x => x.ErrorMessage).IsRequired();
+        builder.HasIndex(x => x.EventId).IsUnique();
     }
 }

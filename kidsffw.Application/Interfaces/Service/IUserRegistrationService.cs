@@ -6,4 +6,6 @@ public interface IUserRegistrationService
 {
     Task<CreateUserRegistrationResponseDto> AddUserRegistration(CreateUserRegistrationRequestDto request);
     Task<IEnumerable<GetUserRequestDto>> GetUsersByMobileNumber(string mobileNumber);
+    
+    Task<CreateUserRegistrationResponseDto?> GetUserByOrderId(string orderId);
 }

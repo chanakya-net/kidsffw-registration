@@ -13,9 +13,9 @@ namespace kidsffw.Api.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
-        private readonly IRazorPayService _razorPayService;
+        private readonly IRazorPayOrderService _razorPayService;
 
-        public TestController(IRazorPayService razorPayService) => _razorPayService = razorPayService;
+        public TestController(IRazorPayOrderService razorPayService) => _razorPayService = razorPayService;
         
         [HttpPost("CreateOrder")]
         public async Task<IActionResult> CreateOrder(decimal amout)

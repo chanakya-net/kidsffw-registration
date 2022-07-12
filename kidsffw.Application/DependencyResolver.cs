@@ -14,7 +14,9 @@ public static class DependencyResolver
             .AddScoped<ICouponService,CouponService>()
             .AddScoped<IOtpService,OtpService>()
             .AddScoped<IUserRegistrationService,UserRegistrationService>()
-            .AddScoped<IRazorPayService,RazorPayService>()
-            .AddScoped<IMessageService,WhatsAppMessageService>();
+            .AddScoped<IRazorPayOrderService,RazorPayOrderService>()
+            .AddScoped<IMessageService,WhatsAppMessageService>()
+            .AddScoped<IRazorPayErrorService,RazorPayErrorService>()
+            .AddScoped<IRazorPayPaymentService,RazorPayPaymentService>();
     }
 }
