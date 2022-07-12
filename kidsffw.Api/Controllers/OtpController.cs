@@ -18,15 +18,16 @@ public class OtpController : ControllerBase
     public async Task<IActionResult> GetOtp(string mobileNumber)
     {
         var result = await _otpService.CreateOtp(mobileNumber);
-        return Ok(result);
+        return Ok(true);
     }
 
-    [HttpPost("Verify")]
-    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-    public async Task<IActionResult> VerifyOtp(string otp, string mobileNumber)
-    {
-        var result = await _otpService.VerifyOtp(mobileNumber, otp);
-        return Ok(result);
-    }
+    // Not Available publicly  
+    // [HttpPost("Verify")]
+    // [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    // public async Task<IActionResult> VerifyOtp(string otp, string mobileNumber)
+    // {
+    //     var result = await _otpService.VerifyOtp(mobileNumber, otp);
+    //     return Ok(result);
+    // }
 
 }

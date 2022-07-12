@@ -17,19 +17,20 @@ public class CouponController : ControllerBase
         _couponService = couponService;
     }
 
-    [HttpPost("CreateCoupon")]
-    [ProducesResponseType(typeof(CreateCouponResponseDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CreateNewCoupon([FromBody] CreateCouponRequestDto? coupon)
-    {
-        if (coupon == null)
-        {
-            return BadRequest();
-        }
-        var result = await _couponService.CreateCoupon(coupon);
-        return Ok(result);
-    }
+    // NOT AVAILABLE 
+    // [HttpPost("CreateCoupon")]
+    // [ProducesResponseType(typeof(CreateCouponResponseDto), StatusCodes.Status200OK)]
+    // public async Task<IActionResult> CreateNewCoupon([FromBody] CreateCouponRequestDto? coupon)
+    // {
+    //     if (coupon == null)
+    //     {
+    //         return BadRequest();
+    //     }
+    //     var result = await _couponService.CreateCoupon(coupon);
+    //     return Ok(result);
+    // }
 
-    [HttpGet("GetDiscountPercantage/{couponCode}")]
+    [HttpGet("GetDiscountPercentage/{couponCode}")]
     [ProducesResponseType(typeof(decimal), StatusCodes.Status200OK)]
     public async Task<decimal> GetCouponDiscount(string couponCode)
     {
