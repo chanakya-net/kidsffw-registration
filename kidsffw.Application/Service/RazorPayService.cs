@@ -5,11 +5,11 @@ using Common.DTO;
 using Interfaces.Service;
 using Razorpay.Api;
 
-public class RazorPayService : IRazorPayService
+public class RazorPayOrderService : IRazorPayOrderService
 {
     private readonly RazorPayConfiguration _razorPayConfiguration;
 
-    public RazorPayService(RazorPayConfiguration razorPayConfiguration) => _razorPayConfiguration = razorPayConfiguration;
+    public RazorPayOrderService(RazorPayConfiguration razorPayConfiguration) => _razorPayConfiguration = razorPayConfiguration;
 
     public RazorPayOrderDetails CreateOrder(decimal amount)
     {
@@ -28,8 +28,4 @@ public class RazorPayService : IRazorPayService
         };
         return orderDetails;
     }
-
-    public async Task<bool> PaymentAuthorized(string paymentDetails) => throw new NotImplementedException();
-
-    public async Task<bool> PaymentFailed(string paymentDetails) => throw new NotImplementedException();
 }

@@ -12,10 +12,10 @@ public class UserRegistrationService : IUserRegistrationService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IOtpService _otpService;
     private readonly ICouponService _couponService;
-    private readonly IRazorPayService _razorPayService;
+    private readonly IRazorPayOrderService _razorPayService;
     private readonly ISalesPartnerService _salesPartnerService;
 
-    public UserRegistrationService(IUnitOfWork unitOfWork, IOtpService otpService, ICouponService couponService, IRazorPayService razorPayService, ISalesPartnerService salesPartnerService)
+    public UserRegistrationService(IUnitOfWork unitOfWork, IOtpService otpService, ICouponService couponService, IRazorPayOrderService razorPayService, ISalesPartnerService salesPartnerService)
     {
         _unitOfWork = unitOfWork;
         _otpService = otpService;
@@ -27,16 +27,10 @@ public class UserRegistrationService : IUserRegistrationService
     public async Task<CreateUserRegistrationResponseDto> AddUserRegistration(CreateUserRegistrationRequestDto request)
     {
         var result = await _otpService.VerifyOtp(request.MobileNumber, request.OtpCode);
-        
         var discount = await _couponService.GetCouponDiscount(request.CouponCode);
-
         var chargeableAmount = RegistrationFee - (RegistrationFee * (discount / 100));
-
         var razorPayOrder = _razorPayService.CreateOrder(chargeableAmount * 100);
-        
         // TODO: do we need to save order to DB ?
-        
-         
         if (result)
         {
             var registeredUser = await _unitOfWork.Repository<UserRegistrationEntity>()
@@ -58,22 +52,7 @@ public class UserRegistrationService : IUserRegistrationService
                 );
             // Save user and order to DB
             await _unitOfWork.SaveChangesAsync();
-            
-            // TODO: sending of the message should be done once payment is verified in webhook callback
-            // We have ket it here just for the verification purpose
-            
             // if saved successfully then add order id and key to the returned type and return it to the user
-
-            #region Need to move this to webhook callback
-            var contact = await _salesPartnerService.GetSalesPartnerContactByCouponId(request.CouponCode);
-            if(contact?.ContactNumber is { Length: > 0 })
-            {
-                var message =
-                    $"Hi {contact.Name}, \n  {request.ParentName} has registered successfully using your reference code {request.CouponCode}.";
-                await _salesPartnerService.SendRegistrationMessage(contact.ContactNumber, message);
-            }
-            #endregion
-            
             return new CreateUserRegistrationResponseDto()
             {
                 Id = registeredUser.Id,
@@ -86,7 +65,8 @@ public class UserRegistrationService : IUserRegistrationService
                 ParentName = registeredUser.ParentName,
                 Amount = razorPayOrder?.DueAmount,
                 OrderId = razorPayOrder?.OrderId,
-                RazorPayKey = razorPayOrder?.Key
+                RazorPayKey = razorPayOrder?.Key,
+                CouponCode = registeredUser.CouponCode,
             };
         }
         throw new InvalidOperationException("Invalid otp");
@@ -113,5 +93,30 @@ public class UserRegistrationService : IUserRegistrationService
             fetchedUserList.Add(fetchedUser);
         }
         return fetchedUserList;
+    }
+
+    public async Task<CreateUserRegistrationResponseDto?> GetUserByOrderId(string orderId)
+    {
+        var spc = Specifications.GetUserByOrderIdr(orderId);
+        var result = await _unitOfWork.Repository<UserRegistrationEntity>().FirstOrDefaultAsync(spc);
+        if (result != null)
+        {
+            var fetchedUser = new CreateUserRegistrationResponseDto()
+            {
+                Age = result.Age,
+                Email = result.Email,
+                City = result.City,
+                Gender = result.Gender,
+                KidName = result.KidName,
+                Id = result.Id,
+                MobileNumber = result.MobileNumber,
+                ParentName = result.ParentName,
+                OrderId = orderId,
+                CouponCode = result.CouponCode
+            };
+            return fetchedUser;
+        }
+
+        return null;
     }
 }

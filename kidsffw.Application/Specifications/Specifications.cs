@@ -24,10 +24,24 @@ public static class Specifications
         return new BaseSpecification<UserRegistrationEntity>(x => x.MobileNumber == mobileNumber);
     }
     
-    public static  BaseSpecification<CouponEntity> GetPatnerIdByCouponCode(string couponCode)
+    public static  BaseSpecification<CouponEntity> GetPartnerIdByCouponCode(string couponCode)
     {
         return new BaseSpecification<CouponEntity>(x => x.CouponCode == couponCode);
     }
+    
+    public static BaseSpecification<RazorPayPaymentEntity> GetEventByIdPayment(string eventId)
+    {
+        return new BaseSpecification<RazorPayPaymentEntity>(x => x.EventId == eventId);
+    }
 
+    public static BaseSpecification<RazorPayErrorEntity> GetEventByIdError(string eventId)
+    {
+        return new BaseSpecification<RazorPayErrorEntity>(x => x.EventId == eventId);
+    }
+    
+    public static  BaseSpecification<UserRegistrationEntity> GetUserByOrderIdr(string orderId)
+    {
+        return new BaseSpecification<UserRegistrationEntity>(x => x.OrderId == orderId);
+    }
 }
 

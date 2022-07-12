@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using kidsffw.Repository.DbContext;
 
@@ -11,9 +12,10 @@ using kidsffw.Repository.DbContext;
 namespace kidsffw.Repository.Migrations
 {
     [DbContext(typeof(RegistrationDbContext))]
-    partial class RegistrationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220712104557_V10")]
+    partial class V10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,8 +104,8 @@ namespace kidsffw.Repository.Migrations
 
                     b.Property<string>("MobileNumber")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("OrderId")
                         .IsRequired()
@@ -136,8 +138,8 @@ namespace kidsffw.Repository.Migrations
 
                     b.Property<string>("MobileNumber")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("OrderId")
                         .IsRequired()

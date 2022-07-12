@@ -13,4 +13,5 @@ public class CreateUserRegistrationResponseDto
     public decimal? Amount { get; set; } = 0M;
     public string OrderId { get; set; } = string.Empty;
     public string RazorPayKey { get; set; } = string.Empty;
+    public string CouponCode { get; set; } = string.Empty;
 }

@@ -9,6 +9,9 @@ public class RegistrationDbContext : DbContext
     public DbSet<CouponEntity>? Coupons { get; set; }
     public DbSet<OtpEntity>? Otps { get; set; }
     public DbSet<UserRegistrationEntity>? UserRegistrations{ get; set; }
+    
+    public DbSet<RazorPayErrorEntity> PaymentErrors { get; set; }
+    public DbSet<RazorPayPaymentEntity> PaymentDetails { get; set; }
 
     public RegistrationDbContext()
     {
