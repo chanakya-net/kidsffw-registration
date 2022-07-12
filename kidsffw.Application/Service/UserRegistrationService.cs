@@ -12,10 +12,10 @@ public class UserRegistrationService : IUserRegistrationService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IOtpService _otpService;
     private readonly ICouponService _couponService;
-    private readonly IRazorPayService _razorPayService;
+    private readonly IRazorPayOrderService _razorPayService;
     private readonly ISalesPartnerService _salesPartnerService;
 
-    public UserRegistrationService(IUnitOfWork unitOfWork, IOtpService otpService, ICouponService couponService, IRazorPayService razorPayService, ISalesPartnerService salesPartnerService)
+    public UserRegistrationService(IUnitOfWork unitOfWork, IOtpService otpService, ICouponService couponService, IRazorPayOrderService razorPayService, ISalesPartnerService salesPartnerService)
     {
         _unitOfWork = unitOfWork;
         _otpService = otpService;
@@ -86,7 +86,8 @@ public class UserRegistrationService : IUserRegistrationService
                 ParentName = registeredUser.ParentName,
                 Amount = razorPayOrder?.DueAmount,
                 OrderId = razorPayOrder?.OrderId,
-                RazorPayKey = razorPayOrder?.Key
+                RazorPayKey = razorPayOrder?.Key,
+                CouponCode = registeredUser.CouponCode,
             };
         }
         throw new InvalidOperationException("Invalid otp");
@@ -113,5 +114,29 @@ public class UserRegistrationService : IUserRegistrationService
             fetchedUserList.Add(fetchedUser);
         }
         return fetchedUserList;
+    }
+
+    public async Task<CreateUserRegistrationResponseDto?> GetUserByOrderId(string orderId)
+    {
+        var spc = Specifications.GetUserByOrderIdr(orderId);
+        var result = await _unitOfWork.Repository<UserRegistrationEntity>().FirstOrDefaultAsync(spc);
+        if (result != null)
+        {
+            var fetchedUser = new CreateUserRegistrationResponseDto()
+            {
+                Age = result.Age,
+                Email = result.Email,
+                City = result.City,
+                Gender = result.Gender,
+                KidName = result.KidName,
+                Id = result.Id,
+                MobileNumber = result.MobileNumber,
+                ParentName = result.ParentName,
+                OrderId = orderId,
+                CouponCode = result.CouponCode
+            };
+        }
+
+        return null;
     }
 }
