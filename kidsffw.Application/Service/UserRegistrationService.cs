@@ -27,16 +27,10 @@ public class UserRegistrationService : IUserRegistrationService
     public async Task<CreateUserRegistrationResponseDto> AddUserRegistration(CreateUserRegistrationRequestDto request)
     {
         var result = await _otpService.VerifyOtp(request.MobileNumber, request.OtpCode);
-        
         var discount = await _couponService.GetCouponDiscount(request.CouponCode);
-
         var chargeableAmount = RegistrationFee - (RegistrationFee * (discount / 100));
-
         var razorPayOrder = _razorPayService.CreateOrder(chargeableAmount * 100);
-        
         // TODO: do we need to save order to DB ?
-        
-         
         if (result)
         {
             var registeredUser = await _unitOfWork.Repository<UserRegistrationEntity>()
@@ -58,22 +52,7 @@ public class UserRegistrationService : IUserRegistrationService
                 );
             // Save user and order to DB
             await _unitOfWork.SaveChangesAsync();
-            
-            // TODO: sending of the message should be done once payment is verified in webhook callback
-            // We have ket it here just for the verification purpose
-            
             // if saved successfully then add order id and key to the returned type and return it to the user
-
-            #region Need to move this to webhook callback
-            var contact = await _salesPartnerService.GetSalesPartnerContactByCouponId(request.CouponCode);
-            if(contact?.ContactNumber is { Length: > 0 })
-            {
-                var message =
-                    $"Hi {contact.Name}, \n  {request.ParentName} has registered successfully using your reference code {request.CouponCode}.";
-                await _salesPartnerService.SendRegistrationMessage(contact.ContactNumber, message);
-            }
-            #endregion
-            
             return new CreateUserRegistrationResponseDto()
             {
                 Id = registeredUser.Id,
@@ -135,6 +114,7 @@ public class UserRegistrationService : IUserRegistrationService
                 OrderId = orderId,
                 CouponCode = result.CouponCode
             };
+            return fetchedUser;
         }
 
         return null;

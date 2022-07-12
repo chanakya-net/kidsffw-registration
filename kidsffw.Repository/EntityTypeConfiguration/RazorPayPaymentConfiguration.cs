@@ -13,7 +13,7 @@ public class RazorPayPaymentConfiguration : IEntityTypeConfiguration<RazorPayPay
         builder.Property(x => x.PaymentId).HasMaxLength(100).IsRequired();
         builder.Property(x => x.EventId).HasMaxLength(100).IsRequired();
         builder.Property(x => x.OrderId).HasMaxLength(100).IsRequired();
-        builder.Property(x => x.MobileNumber).HasMaxLength(12).IsRequired();
+        builder.Property(x => x.MobileNumber).HasMaxLength(20).IsRequired();
         builder.HasIndex(x => x.EventId).IsUnique();
     }
 }
