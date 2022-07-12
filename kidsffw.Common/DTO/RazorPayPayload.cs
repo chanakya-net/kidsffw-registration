@@ -2,10 +2,6 @@ namespace kidsffw.Common.DTO;
 
 using System.Text.Json.Serialization;
 
-public class RazorPayPayload
-{
-    
-}
 
 public class AcquirerData
 {
@@ -43,7 +39,7 @@ public class Entity
     [JsonPropertyName("description")]
     public string Description { get; set; } = string.Empty;
     [JsonPropertyName("card_id")]
-    public object CardId { get; set; } ;
+    public object CardId { get; set; } 
     [JsonPropertyName("bank")]
     public string Bank { get; set; } = string.Empty;
     [JsonPropertyName("wallet")]
@@ -74,4 +70,27 @@ public class Entity
     public AcquirerData AcquirerData { get; set; }
     [JsonPropertyName("created_at")]
     public int CreatedAt { get; set; }
+}
+
+
+
+public class Payload
+{
+    public Payment payment { get; set; }
+}
+
+public class Payment
+{
+    public Entity entity { get; set; }
+}
+
+
+public class Root
+{
+    public string entity { get; set; }
+    public string account_id { get; set; }
+    public string @event { get; set; }
+    public List<string> contains { get; set; }
+    public Payload payload { get; set; }
+    public int created_at { get; set; }
 }
