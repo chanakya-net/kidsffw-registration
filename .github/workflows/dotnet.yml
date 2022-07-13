@@ -15,16 +15,17 @@ jobs:
         dotnet-version: 6.x.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
-      run: dotnet build -c Release --no-restore
-    - name: Publish Application
-      run: dotnet publish -c Release
     - name: Replace Application Data
       uses:  microsoft/variable-substitution@v1
       with:
         files: '/home/runner/work/kidsffw-registration/kidsffw-registration/kidsffw.Api/appsettings.json'
       env:
         ConnectionStrings.msSql: ${{secrets.DB_CONNECTION_PROD}}
+    - name: Build
+      run: dotnet build -c Release --no-restore
+    - name: Publish Application
+      run: dotnet publish -c Release
+   
     - name: Upload API Artifact
       uses: actions/upload-artifact@v2
       with:
