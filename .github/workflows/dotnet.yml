@@ -13,14 +13,18 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.x.x
-        run: echo ${{ env.DOTNET_ROOT }}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build -c Release --no-restore
     - name: Publish Application
       run: dotnet publish -c Release
-
+    - name: Replace Application Data
+      uses:  microsoft/variable-substitution@v1
+      with:
+        files: '${{env.DOTNET_ROOT}}\kidsffw-registration\kidsffw.Api\appsettings.json'
+      env:
+        ConnectionStrings.msSql: ${{secrets.DB_CONNECTION_PROD}}
     - name: Upload API Artifact
       uses: actions/upload-artifact@v2
       with:
