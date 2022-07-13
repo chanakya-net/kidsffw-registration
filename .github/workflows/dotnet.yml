@@ -21,6 +21,8 @@ jobs:
         files: '/home/runner/work/kidsffw-registration/kidsffw-registration/kidsffw.Api/appsettings.json'
       env:
         ConnectionStrings.msSql: ${{secrets.DB_CONNECTION_PROD}}
+        RazorPayConfiguration.KeyId: ${{secrets.RAZOR_PAY_KEY_ID}}
+        RazorPayConfiguration.KeySecret: ${{secrets.RAZOR_PAY_KEY_SALT}}
     - name: Build
       run: dotnet build -c Release --no-restore
     - name: Publish Application
