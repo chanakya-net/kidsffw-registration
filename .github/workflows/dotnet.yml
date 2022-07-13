@@ -15,7 +15,7 @@ jobs:
         dotnet-version: 6.x.x
       env:
         CONN_STR:  ${{secrets.DB_CONNECTION_PROD}}
-    - run: echo $CONN_STR
+    - run: echo "$CONN_STR"
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
