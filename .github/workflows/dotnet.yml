@@ -1,9 +1,9 @@
 name: Kidsffw CI/CD
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "test" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "test" ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,19 +15,10 @@ jobs:
         dotnet-version: 6.x.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Replace Application Data
-      uses:  microsoft/variable-substitution@v1
-      with:
-        files: '/home/runner/work/kidsffw-registration/kidsffw-registration/kidsffw.Api/appsettings.json'
-      env:
-        ConnectionStrings.msSql: ${{secrets.DB_CONNECTION_PROD}}
-        RazorPayConfiguration.KeyId: ${{secrets.RAZOR_PAY_KEY_ID}}
-        RazorPayConfiguration.KeySecret: ${{secrets.RAZOR_PAY_KEY_SALT}}
     - name: Build
       run: dotnet build -c Release --no-restore
     - name: Publish Application
       run: dotnet publish -c Release
-   
     - name: Upload API Artifact
       uses: actions/upload-artifact@v2
       with:
