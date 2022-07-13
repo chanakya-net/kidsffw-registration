@@ -22,7 +22,7 @@ jobs:
     - name: Replace Application Data
       uses:  microsoft/variable-substitution@v1
       with:
-        files: '${{env.DOTNET_ROOT}}\kidsffw-registration\kidsffw.Api\appsettings.json'
+        files: '/home/runner/work/kidsffw-registration/kidsffw-registration/kidsffw.Api/appsettings.json'
       env:
         ConnectionStrings.msSql: ${{secrets.DB_CONNECTION_PROD}}
     - name: Upload API Artifact
