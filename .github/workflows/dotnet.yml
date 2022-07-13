@@ -16,9 +16,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build -c Release --no-restore
+      run: dotnet build -c debug --no-restore
     - name: Publish Application
-      run: dotnet publish -c Release
+      run: dotnet publish -c debug
     - name: Upload API Artifact
       uses: actions/upload-artifact@v2
       with:
