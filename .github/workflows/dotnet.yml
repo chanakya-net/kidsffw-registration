@@ -15,7 +15,7 @@ jobs:
         dotnet-version: 6.x.x
       env:
         CONN_STR:  "this is test"
-    - run: echo ${{ secrets.DB_CONNECTION_PROD }}
+    - run: echo ${{ secrets.DB_CONNECTION_PROD }} | sed 's/./&/g'
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
