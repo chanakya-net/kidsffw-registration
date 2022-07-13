@@ -1,26 +1,36 @@
+
+
 name: Kidsffw CI/CD
 on:
   push:
-    branches: [ "test" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "test" ]
+    branches: [ "main" ]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: 6.x.x
-      - name: Restore dependencies
-        run: dotnet restore
-      - name: Build
-        run: dotnet build -c debug --no-restore
-      - name: Publish Application
-        run: dotnet publish -c debug
-      - name: Upload API Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: kidsffw.test
-          path: /home/runner/work/kidsffw-registration/kidsffw-registration/kidsffw.Api/bin/Debug/net6.0/publish/
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.x.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Replace Application Data
+      uses:  microsoft/variable-substitution@v1
+      with:
+        files: '/home/runner/work/kidsffw-registration/kidsffw-registration/kidsffw.Api/appsettings.json'
+      env:
+        ConnectionStrings.msSql: ${{secrets.DB_CONNECTION_PROD}}
+        RazorPayConfiguration.KeyId: ${{secrets.RAZOR_PAY_KEY_ID}}
+        RazorPayConfiguration.KeySecret: ${{secrets.RAZOR_PAY_KEY_SALT}}
+    - name: Build
+      run: dotnet build -c Release --no-restore
+    - name: Publish Application
+      run: dotnet publish -c Release
+    - name: Upload API Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: kidsffw
+        path: /home/runner/work/kidsffw-registration/kidsffw-registration/kidsffw.Api/bin/Release/net6.0/publish/
