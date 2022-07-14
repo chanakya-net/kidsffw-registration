@@ -26,7 +26,7 @@ builder.Services.AddSingleton(razorPayConfiguration);
 builder.Services.AddApplication();
 
 
-
+//just to trigger the build 
 var app = builder.Build();
 
 
