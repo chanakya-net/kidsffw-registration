@@ -109,7 +109,7 @@ public class RazorPayController : ControllerBase
     }
     
     [HttpPost("PaymentFailed")]
-    public async Task<IActionResult> PaymentFailed([FromBody]string payload)
+    public async Task<IActionResult> PaymentFailed([FromBody]object payload)
     {
         // Get Event ID from from request
         var eventId = Request.Headers["x-razorpay-event-id"].ToString();
@@ -123,7 +123,7 @@ public class RazorPayController : ControllerBase
         {
             return Ok(200);
         }
-            
+       
         // get signature from request
         var signature = Request.Headers["X-Razorpay-Signature"].ToString();
         // Verify if signature is valid
@@ -136,8 +136,22 @@ public class RazorPayController : ControllerBase
             var orderId = myDeserializedOrder?.payload.payment.entity.order_id ?? string.Empty;
             var registrationDetails = await _userRegistrationService.GetUserByOrderId(orderId);
             if (registrationDetails != null)
+            {
+                _messageService.SendMessage("9513212352",
+                    $"{registrationDetails.ParentName} with contact number {registrationDetails.MobileNumber} tried to register for {registrationDetails.City} event but failed.");
                 _messageService.SendMessage("9620880000",
-                    $"{registrationDetails.ParentName} tried to register for {registrationDetails.City} event but failed.");
+                    $"{registrationDetails.ParentName} with contact number {registrationDetails.MobileNumber} tried to register for {registrationDetails.City} event but failed.");
+                var saved = await _razorPayErrorService.SaveErrorInformation(
+                    new
+                        RazorPayErrorDto()
+                        {
+                            ErrorMessage = "Payment Failed",
+                            EventId = eventId,
+                            OrderId = orderId,
+                            MobileNumber = registrationDetails.MobileNumber,
+                        });
+            }
+                
         }
         return Ok(200);  
     }

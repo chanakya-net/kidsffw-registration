@@ -4,14 +4,14 @@ using kidsffw.Common.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMemoryCache();
+//builder.Services.AddMemoryCache();
 
-builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
-builder.Services.Configure<IpRateLimitPolicies>(builder.Configuration.GetSection("IpRateLimitPolicies"));
+//builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+//builder.Services.Configure<IpRateLimitPolicies>(builder.Configuration.GetSection("IpRateLimitPolicies"));
 
-builder.Services.AddInMemoryRateLimiting();
+//builder.Services.AddInMemoryRateLimiting();
 
-builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+//builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
 
 // Add services to the container.
@@ -37,7 +37,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseIpRateLimiting();
+//app.UseIpRateLimiting();
 
 app.UseCors("crossdomain");
 app.UseHttpsRedirection();
