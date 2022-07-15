@@ -109,9 +109,37 @@ public class RazorPayController : ControllerBase
     }
     
     [HttpPost("PaymentFailed")]
-    public IActionResult PaymentFailed([FromBody]string payload)
+    public async Task<IActionResult> PaymentFailed([FromBody]string payload)
     {
-        return Ok(200);
+        // Get Event ID from from request
+        var eventId = Request.Headers["x-razorpay-event-id"].ToString();
+        if (eventId.Length <= 0)
+        {
+            return Ok(200);
+        }
+        //check if event is already saved 
+        var eventIdResult = await _razorPayErrorService.FindEventId(eventId);
+        if (eventIdResult == eventId)
+        {
+            return Ok(200);
+        }
+            
+        // get signature from request
+        var signature = Request.Headers["X-Razorpay-Signature"].ToString();
+        // Verify if signature is valid
+        Utils.verifyWebhookSignature(payload.ToString(), signature, "Ailudulm2@");
+            
+        // Get the payment object from the paylod
+        Root myDeserializedOrder = JsonConvert.DeserializeObject<Root>(payload.ToString());
+        if (myDeserializedOrder?.payload?.payment?.entity?.contact.Length > 0)
+        {
+            var orderId = myDeserializedOrder?.payload.payment.entity.order_id ?? string.Empty;
+            var registrationDetails = await _userRegistrationService.GetUserByOrderId(orderId);
+            if (registrationDetails != null)
+                _messageService.SendMessage("9620880000",
+                    $"{registrationDetails.ParentName} tried to register for {registrationDetails.City} event but failed.");
+        }
+        return Ok(200);  
     }
 }
 
