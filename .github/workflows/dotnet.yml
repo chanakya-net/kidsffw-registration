@@ -20,10 +20,20 @@ jobs:
         dotnet-version: 6.x.x
     - name: Restore dependencies
       run: dotnet restore 
-    - name: Build
+    - name: Build Test
+      if: ${{steps.branch-name.outputs.current_branch}} == "test"
       run: dotnet build -c debug --no-restore
-    - name: Publish Application
+      # run: dotnet build -c debug --no-restore
+    - name: build Release
+      if: ${{steps.branch-name.outputs.current_branch}} == "main"
+      run: dotnet build -c release --no-restore
+    - name: Publish Test Application
+      if: ${{steps.branch-name.outputs.current_branch}} == "test"
       run: dotnet publish -c debug
+    - name: Publish Release Application
+      if: ${{steps.branch-name.outputs.current_branch}} == "main"
+      run: dotnet publish -c release
+      
     - name: Upload API Artifact
       uses: actions/upload-artifact@v2
       with:
