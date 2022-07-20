@@ -13,12 +13,12 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.x.x
+    - name: Set Branch Name 
+    - uses: nelonoel/branch-name@v1
+      # Use branch name for whatever purpose
+      run: echo ${BRANCH_NAME}
     - name: Restore dependencies
       run: dotnet restore
-    - name: Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract_branch
     - name: Build
       run: dotnet build -c debug --no-restore
     - name: Publish Application
