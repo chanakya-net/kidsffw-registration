@@ -11,13 +11,13 @@ jobs:
     - uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
-    - uses: nelonoel/branch-name@v1
-      # Use branch name for whatever purpose
-    - run: echo ${BRANCH_NAME}
       with:
         dotnet-version: 6.x.x
     - name: Restore dependencies
       run: dotnet restore
+    - uses: nelonoel/branch-name@v1
+      # Use branch name for whatever purpose
+      run: echo ${BRANCH_NAME}
     - name: Build
       run: dotnet build -c debug --no-restore
     - name: Publish Application
