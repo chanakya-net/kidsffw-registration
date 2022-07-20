@@ -13,6 +13,7 @@ jobs:
     - name: Get branch name
       id: branch-name
       uses: tj-actions/branch-names@v5.4
+    - name: print Branch Name 
       run: echo "{{ steps.branch-name.outputs.current_branch }}"
     - uses: actions/checkout@v3
     - name: Setup .NET
