@@ -22,6 +22,7 @@ jobs:
     - name: Upload API Artifact
       uses: actions/upload-artifact@v2
       with:
+        
         name: kidsffw.test
         path: /home/runner/work/kidsffw-registration/kidsffw-registration/kidsffw.Api/bin/Debug/net6.0/publish/
 
