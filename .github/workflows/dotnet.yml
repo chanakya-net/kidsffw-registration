@@ -20,6 +20,8 @@
           run: dotnet build -c debug --no-restore
         - name: Publish Application
           run: dotnet publish -c debug
+        - name: print workspace
+          run : echo ${{github.workspace}
         - name: Upload API Artifact
           uses: actions/upload-artifact@v2
           with:
