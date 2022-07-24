@@ -5,8 +5,8 @@
       pull_request:
         branches: [ "main" ]
     jobs:
-      
       Dev:
+        environment: test
         runs-on: ubuntu-latest
         steps:
         - uses: actions/checkout@v3
@@ -26,6 +26,7 @@
             name: kidsffw.test
             path: /home/runner/work/kidsffw-registration/kidsffw-registration/kidsffw.Api/bin/Debug/net6.0/publish/
       Prod:
+        needs: [Dev]
         environment: Prod
         runs-on: ubuntu-latest
         steps:
