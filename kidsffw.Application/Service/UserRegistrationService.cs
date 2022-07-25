@@ -13,15 +13,13 @@ public class UserRegistrationService : IUserRegistrationService
     private readonly IOtpService _otpService;
     private readonly ICouponService _couponService;
     private readonly IRazorPayOrderService _razorPayService;
-    private readonly ISalesPartnerService _salesPartnerService;
 
-    public UserRegistrationService(IUnitOfWork unitOfWork, IOtpService otpService, ICouponService couponService, IRazorPayOrderService razorPayService, ISalesPartnerService salesPartnerService)
+    public UserRegistrationService(IUnitOfWork unitOfWork, IOtpService otpService, ICouponService couponService, IRazorPayOrderService razorPayService)
     {
         _unitOfWork = unitOfWork;
         _otpService = otpService;
         _couponService = couponService;
         _razorPayService = razorPayService;
-        _salesPartnerService = salesPartnerService;
     }
 
     public async Task<CreateUserRegistrationResponseDto> AddUserRegistration(CreateUserRegistrationRequestDto request)
@@ -30,7 +28,6 @@ public class UserRegistrationService : IUserRegistrationService
         var discount = await _couponService.GetCouponDiscount(request.CouponCode);
         var chargeableAmount = RegistrationFee - (RegistrationFee * (discount / 100));
         var razorPayOrder = _razorPayService.CreateOrder(chargeableAmount * 100);
-        // TODO: do we need to save order to DB ?
         if (result)
         {
             var registeredUser = await _unitOfWork.Repository<UserRegistrationEntity>()
@@ -63,9 +60,9 @@ public class UserRegistrationService : IUserRegistrationService
                 KidName = registeredUser.KidName,
                 MobileNumber = registeredUser.MobileNumber,
                 ParentName = registeredUser.ParentName,
-                Amount = razorPayOrder?.DueAmount,
-                OrderId = razorPayOrder?.OrderId,
-                RazorPayKey = razorPayOrder?.Key,
+                Amount = razorPayOrder.DueAmount,
+                OrderId = razorPayOrder.OrderId,
+                RazorPayKey = razorPayOrder.Key,
                 CouponCode = registeredUser.CouponCode,
             };
         }
@@ -81,7 +78,7 @@ public class UserRegistrationService : IUserRegistrationService
         {
             var fetchedUser = new GetUserRequestDto()
             {
-                Age = user.Age,
+                Age = user!.Age,
                 Email = user.Email,
                 City = user.City,
                 Gender = user.Gender,

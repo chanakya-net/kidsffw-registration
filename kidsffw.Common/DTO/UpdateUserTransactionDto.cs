@@ -2,8 +2,8 @@ namespace kidsffw.Common.DTO;
 
 public class UpdateUserTransactionDtoRequest
 {
-    public int registrationId { get; set; }
-    public string TransactionId { get; set; }
-    public string TransactionStatus { get; set; }
-    public string TransactionAmount { get; set; }
+    public int RegistrationId { get; set; } 
+    public string TransactionId { get; set; } = string.Empty;
+    public string TransactionStatus { get; set; } = string.Empty;
+    public string TransactionAmount { get; set; } = string.Empty;
 }

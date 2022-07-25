@@ -61,6 +61,6 @@ public class CouponService : ICouponService
 
     public void DisableCoupon(string couponCode)
     {
-        throw new NotImplementedException();
+       return;
     }
 }
