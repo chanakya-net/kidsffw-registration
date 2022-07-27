@@ -4,6 +4,7 @@ using kidsffw.Application.Interfaces.Service;
 using Common.DTO;
 using kidsffw.Common.Interfaces.Repository;
 using Domain.Entity;
+using Mapster;
 using Specifications;
 
 
@@ -24,19 +25,11 @@ public class SalesPartnerService : ISalesPartnerService
         {
             return null;
         }
-
-
         var user = await _unitOfWork.Repository<SalesPartnerEntity>().AddAsync(
-            new SalesPartnerEntity()
-            {
-                ContactNumber = request.ContactNumber, Email = request.Email, Name = request.Name
-            }
+           request.Adapt<SalesPartnerEntity>()
         );
         await _unitOfWork.SaveChangesAsync();
-        return new CreateSalesPartnerResponseDto()
-        {
-            Id = user.Id, Name = user.Name, Email = user.Email, ContactNumber = user.ContactNumber
-        };
+        return user.Adapt<CreateSalesPartnerResponseDto>();
     }
 
     public async Task<SalesPartnerContactDto?> GetSalesPartnerContactByPartnerId(int salesPartnerId)
@@ -46,12 +39,8 @@ public class SalesPartnerService : ISalesPartnerService
         {
             return null;
         }
-        return new SalesPartnerContactDto()
-        {
-            ContactNumber = result.ContactNumber,
-            Email = result.Email,
-            Name = result.Name
-        };
+
+        return result.Adapt<SalesPartnerContactDto>();
     }
 
     public async Task<SalesPartnerContactDto?> GetSalesPartnerContactByCouponId(string couponId)

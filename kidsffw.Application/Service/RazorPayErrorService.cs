@@ -4,6 +4,7 @@ using Common.DTO;
 using Common.Interfaces.Repository;
 using Domain.Entity;
 using Interfaces.Service;
+using Mapster;
 using Specifications;
 
 public class RazorPayErrorService : IRazorPayErrorService
@@ -22,13 +23,8 @@ public class RazorPayErrorService : IRazorPayErrorService
     public async Task<int> SaveErrorInformation(RazorPayErrorDto payment)
     {
         var result = await _unitOfWork.Repository<RazorPayErrorEntity>().AddAsync(
-            new RazorPayErrorEntity()
-            {
-                ErrorMessage = payment.ErrorMessage,
-                EventId = payment.EventId,
-                MobileNumber = payment.MobileNumber,
-                OrderId = payment.OrderId
-            });
+            payment.Adapt<RazorPayErrorEntity>()
+        );
         await _unitOfWork.SaveChangesAsync();
         return result.Id;
     }

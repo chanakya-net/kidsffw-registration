@@ -5,6 +5,7 @@ using Specifications;
 using Common.DTO;
 using kidsffw.Common.Interfaces.Repository;
 using Domain.Entity;
+using Mapster;
 
 public class CouponService : ICouponService
 {
@@ -27,15 +28,10 @@ public class CouponService : ICouponService
         {
             throw new KeyNotFoundException("SalesPartner not found");
         }
-        
-        var result = await _unitOfWork.Repository<CouponEntity>().AddAsync(new CouponEntity
-        {
-            SalesPartner = salesPartner,
-            CouponCode = request.CouponCode,
-            IsActive = request.IsActive,
-            DiscountPercent = request.DiscountPercent,
-            ValidFrom = DateTime.UtcNow
-        });
+
+        var couponEntity = request.Adapt<CouponEntity>();
+        couponEntity.SalesPartner = salesPartner;
+        var result = await _unitOfWork.Repository<CouponEntity>().AddAsync(couponEntity);
         await _unitOfWork.SaveChangesAsync();
         return new CreateCouponResponseDto()
         {
