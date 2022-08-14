@@ -4,5 +4,5 @@ using Common.DTO;
 
 public interface IRazorPayOrderService
 {
-    public RazorPayOrderDetails CreateOrder(decimal amount);
+    public RazorPayOrderDetails CreateOrder(decimal amount,string name, string contactNumber);
 }

@@ -32,7 +32,7 @@ public class UserRegistrationService : IUserRegistrationService
         }
         var discount = await _couponService.GetCouponDiscount(request.CouponCode);
         var chargeableAmount = RegistrationFee - (RegistrationFee * (discount / 100));
-        var razorPayOrder = _razorPayService.CreateOrder(chargeableAmount * 100);
+        var razorPayOrder = _razorPayService.CreateOrder(chargeableAmount * 100,request.ParentName,request.MobileNumber);
         var user = request.Adapt<UserRegistrationEntity>();
         user.OrderId = razorPayOrder.OrderId;
         user.OrderCreationDate = DateTime.UtcNow;
