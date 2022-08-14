@@ -22,7 +22,7 @@ public class RazorPayOrderService : IRazorPayOrderService
         orderOptions.Add("amount", amount);
         orderOptions.Add("currency", "INR");
         orderOptions.Add("receipt", GetReceiptId());
-        orderOptions.Add("notes", JsonSerializer.Serialize(notedDict));
+        orderOptions.Add("notes", notedDict);
         Order orderCreated = razorPayClient.Order.Create(orderOptions);
         var orderDetails = new RazorPayOrderDetails()
         {
