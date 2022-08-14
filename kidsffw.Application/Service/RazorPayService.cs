@@ -4,6 +4,7 @@ using Common.Configuration;
 using Common.DTO;
 using Interfaces.Service;
 using Razorpay.Api;
+using System.Text.Json;
 
 public class RazorPayOrderService : IRazorPayOrderService
 {
@@ -13,13 +14,15 @@ public class RazorPayOrderService : IRazorPayOrderService
     public RazorPayOrderService(RazorPayConfiguration razorPayConfiguration) =>
         _razorPayConfiguration = razorPayConfiguration;
 
-    public RazorPayOrderDetails CreateOrder(decimal amount)
+    public RazorPayOrderDetails CreateOrder(decimal amount, string name, string mobileNumber)
     {
         var orderOptions = new Dictionary<string, object>();
         var razorPayClient = new RazorpayClient(_razorPayConfiguration.KeyId, _razorPayConfiguration.KeySecret);
+        var notedDict = new Dictionary<string, string> { { "name", name }, { "mobile", mobileNumber } };
         orderOptions.Add("amount", amount);
         orderOptions.Add("currency", "INR");
         orderOptions.Add("receipt", GetReceiptId());
+        orderOptions.Add("notes", JsonSerializer.Serialize(notedDict));
         Order orderCreated = razorPayClient.Order.Create(orderOptions);
         var orderDetails = new RazorPayOrderDetails()
         {

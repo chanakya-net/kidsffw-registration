@@ -27,7 +27,7 @@ public class UserRegistrationService : IUserRegistrationService
         var result = await _otpService.VerifyOtp(request.MobileNumber, request.OtpCode);
         var discount = await _couponService.GetCouponDiscount(request.CouponCode);
         var chargeableAmount = RegistrationFee - (RegistrationFee * (discount / 100));
-        var razorPayOrder = _razorPayService.CreateOrder(chargeableAmount * 100);
+        var razorPayOrder = _razorPayService.CreateOrder(chargeableAmount * 100,request.ParentName,request.MobileNumber);
         if (result)
         {
             var registeredUser = await _unitOfWork.Repository<UserRegistrationEntity>()
@@ -38,7 +38,7 @@ public class UserRegistrationService : IUserRegistrationService
                         Email = request.Email,
                         City = request.City,
                         Gender = request.Gender,
-                        CouponCode = request.CouponCode,
+                        CouponCode = request.CouponCode.Length > 6 ? string.Empty : request.CouponCode,
                         KidName = request.KidName,
                         MobileNumber = request.MobileNumber,
                         OtpVerified = true,
