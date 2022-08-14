@@ -28,6 +28,10 @@ public class UserRegistrationService : IUserRegistrationService
         var discount = await _couponService.GetCouponDiscount(request.CouponCode);
         var chargeableAmount = RegistrationFee - (RegistrationFee * (discount / 100));
         var razorPayOrder = _razorPayService.CreateOrder(chargeableAmount * 100,request.ParentName,request.MobileNumber);
+        if (!string.IsNullOrEmpty(request.CouponCode) && request.CouponCode.Length > 6)
+        {
+            request.CouponCode = string.Empty;
+        }
         if (result)
         {
             var registeredUser = await _unitOfWork.Repository<UserRegistrationEntity>()
@@ -38,7 +42,7 @@ public class UserRegistrationService : IUserRegistrationService
                         Email = request.Email,
                         City = request.City,
                         Gender = request.Gender,
-                        CouponCode = request.CouponCode.Length > 6 ? string.Empty : request.CouponCode,
+                        CouponCode = request.CouponCode,
                         KidName = request.KidName,
                         MobileNumber = request.MobileNumber,
                         OtpVerified = true,
