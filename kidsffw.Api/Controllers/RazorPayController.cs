@@ -181,7 +181,6 @@ public class Entity
     public object? vpa { get; set; }
     public string? email { get; set; }
     public string contact { get; set; } = string.Empty;
-    public List<object>? notes { get; set; }
     public object? fee { get; set; }
     public object? tax { get; set; }
     public object? error_code { get; set; }
@@ -189,7 +188,7 @@ public class Entity
     public object? error_source { get; set; }
     public object? error_step { get; set; }
     public object? error_reason { get; set; }
-    public AcquirerData? acquirer_data { get; set; }
+    public object? acquirer_data { get; set; }
     public int created_at { get; set; }
 }
 
