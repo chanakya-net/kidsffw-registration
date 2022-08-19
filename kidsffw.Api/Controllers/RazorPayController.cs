@@ -59,19 +59,21 @@ public class RazorPayController : ControllerBase
                     // Find sales partner by coupon code
                     var salesPartner =
                         await _salesPartnerService.GetSalesPartnerContactByCouponId(registrationDetails.CouponCode);
-                    
+
                     // Send message to sales partner
-                    if (salesPartner!= null)
+                    if (salesPartner != null)
                     {
 #pragma warning disable CS4014
-                        _messageService.SendMessage(salesPartner.ContactNumber??string.Empty, 
+                        _messageService.SendMessage(salesPartner.ContactNumber ?? string.Empty,
 
                             $"Hi {salesPartner.Name},\n Mr./Mrs. {registrationDetails.ParentName} has registered successfully with coupon {registrationDetails.CouponCode} for {registrationDetails.City} event.\n Thank you for your contribution.");
                     }
 
                     // send message to customer
-                    _messageService.SendMessage(registrationDetails.MobileNumber, 
-                        $"Hi {registrationDetails.ParentName},\n Your kid {registrationDetails.KidName} has been registered successfully for {registrationDetails.City} event.\n Your Payment id {paymentId}" );
+                    _messageService.SendMessage(registrationDetails.MobileNumber,
+                        $"Hi {registrationDetails.ParentName},\n Your kid {registrationDetails.KidName} has been registered successfully for {registrationDetails.City} event.\n Your Payment id {paymentId}");
+                    _messageService.SendMessage("9513212352",
+                        $"Hi Prakash, {registrationDetails.ParentName} with contact number {registrationDetails.MobileNumber} has registered his/her kid {registrationDetails.KidName} successfully for {registrationDetails.City} event.\n");
 #pragma warning restore CS4014
 
                 }
